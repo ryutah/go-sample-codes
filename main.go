@@ -1,5 +1,17 @@
 package main
 
+type Hoge struct {
+	Fuga string
+}
+
 func main() {
-	InputOutput()
+	Sort()
+}
+
+func NewHoge() *Hoge {
+	return nil
+}
+
+func hoge() string {
+	return "hogehoge"
 }
