@@ -6,9 +6,10 @@ import (
 )
 
 func main() {
-	AsyncSample()
+	// 	AsyncSample()
 	// 	bench("SeriallProcess", SeriallProcess)
 	// 	bench("ParallelProcess", ParallelProcess)
+	Bablesort()
 }
 
 func bench(label string, f func()) {
