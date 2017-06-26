@@ -6,8 +6,9 @@ import (
 )
 
 func main() {
-	bench("SeriallProcess", SeriallProcess)
-	bench("ParallelProcess", ParallelProcess)
+	AsyncSample()
+	// 	bench("SeriallProcess", SeriallProcess)
+	// 	bench("ParallelProcess", ParallelProcess)
 }
 
 func bench(label string, f func()) {
