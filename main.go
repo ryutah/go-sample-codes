@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -11,8 +10,12 @@ func main() {
 	// 	bench("SeriallProcess", SeriallProcess)
 	// 	bench("ParallelProcess", ParallelProcess)
 	// 	Bablesort()
-	err := raiseError()
-	log.Printf("%v", err)
+	// 	err := raiseError()
+	// 	log.Printf("%v\n", err)
+	// 	log.Printf("%v", errors.Cause(err))
+	// 	timeSample()
+	// 	timeLocation()
+	testInheritance()
 }
 
 func bench(label string, f func()) {

@@ -9,6 +9,7 @@ import (
 func raiseError() error {
 	f, err := os.Open("nofile")
 	if err != nil {
+		err = errors.WithMessage(err, "hogefugahogefuga")
 		return errors.WithMessage(err, "hogefuga")
 	}
 	defer f.Close()
