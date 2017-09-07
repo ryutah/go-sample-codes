@@ -15,7 +15,12 @@ func main() {
 	// 	log.Printf("%v", errors.Cause(err))
 	// 	timeSample()
 	// 	timeLocation()
-	testInheritance()
+	// 	testInheritance()
+	// 	errorCompareSample()
+	// 		httpClientSample()
+	// 	typeSample()
+	// 	appendToSliceSample()
+	logSample()
 }
 
 func bench(label string, f func()) {
