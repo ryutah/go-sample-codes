@@ -6,18 +6,19 @@ import (
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
 func TestMockServer(t *testing.T) {
 	// TODO 何故かタイムアウトでテストが失敗する
-	ch := make(chan string)
+	// 	ch := make(chan string)
 	// ハンドラーを作成
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "sample")
 		// XXX 多分ここでブロッキングしてるっぽい
 		// 普通にプログラム起動してたら動くんだけど何故だろう
-		ch <- "Sample http"
+		// 		ch <- "Sample http"
 	})
 
 	// モックサーバを作成
@@ -42,7 +43,29 @@ func TestMockServer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(body) != "sample" {
-		t.Error("want body %v, got %v", "sample", string(body))
+	if strings.Trim(string(body), "\n") != "sample" {
+		t.Errorf("want body %v, got %v", "sample", string(body))
+	}
+}
+
+func TestHttpTest(t *testing.T) {
+	sampleHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Test")
+	})
+
+	ts := httptest.NewServer(sampleHandler)
+	defer ts.Close()
+
+	r, err := http.Get(ts.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.TrimSpace(string(data)) != "Test" {
+		t.Errorf("want %v, got %v", "Test", string(data))
 	}
 }
