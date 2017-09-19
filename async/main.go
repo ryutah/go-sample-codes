@@ -26,7 +26,7 @@ func AsyncSample() {
 func asyncGet(c chan string) {
 	rand.Seed(time.Now().UnixNano())
 	r := rand.Float64()
-	slpTime := r * 10000
+	slpTime := r * 100
 	time.Sleep(time.Duration(slpTime) * time.Millisecond)
 	c <- fmt.Sprintf("Result after sleep %vms", slpTime)
 }

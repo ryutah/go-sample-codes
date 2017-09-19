@@ -1,0 +1,11 @@
+foo:
+  bar: BAR
+  foobar:
+    hoge: HOGE
+    fuga:
+      - a
+      - b
+    hogefuga:
+      - c: C
+        d: D
+foofoo: foofoo
