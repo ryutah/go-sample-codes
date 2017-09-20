@@ -3,13 +3,14 @@ package main
 import (
 	"compress/gzip"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"strings"
 )
 
 func main() {
-	str := `H4sIAAAJbogA/3SPT0/EIBDFv8ucqy1NVrM9e/G+nnTTsDDbZS1/hEHTNHx3GW4eDAcy837w3ttBeXc1S46SjHcw7bB6qfnWmMi4tj7Jy4ptJ0kmpNcKAMUt23Cb9QU6CNHfUf0RRvFwD4OoIvHzJp1smMdBPA9HcRBPBzEe58/8I52H0sHV4KpfcDXWEMZKd/V8ZU/VGj6gDknd0EoO0tgE0/sOTloGstJstQUeEkXjFijn+m3yOSp8i4ZxWNLU91xx5i79v4EeVfqGcynlFwAA//8=`
+	str := `H4sIAAAJbogA/1SPPWvEMAyG/4vmpPlYDjIXSvd0ao/DtZ2cSmylllw4gv97rdCleDB634fH8gGW4oJrTkaQIkwHbGSc3s6zYDzj2Xxu/syMGPbyWgGQ9Mhhv9806wdoYE/05e2/spUq6Yf2r6qQqOpE5rDf5pfhAqWBBf3mnv2GAcWnWjb1fGeS+ip8QB3Y3n0wusPJMkzvB0QTFMjWqfmx68CSMK5QrlXLlJP1bwkVh5WnrluJHLcYF+r0o61u3439cOnHsX+y/APXUsovAAAA//8=`
 
 	encoded, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
@@ -19,7 +20,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(decoded)
+	prettyPrintJSON(decoded)
 }
 
 func decompressFromGzip(s string) (orig string, err error) {
@@ -41,4 +42,16 @@ func decompressFromGzip(s string) (orig string, err error) {
 	}
 
 	return
+}
+
+func prettyPrintJSON(s string) {
+	j := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &j); err != nil {
+		panic(err)
+	}
+	pp, err := json.MarshalIndent(j, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(pp))
 }
