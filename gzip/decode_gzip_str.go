@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	str := `H4sIAAAJbogA/1SPPWvEMAyG/4vmpPlYDjIXSvd0ao/DtZ2cSmylllw4gv97rdCleDB634fH8gGW4oJrTkaQIkwHbGSc3s6zYDzj2Xxu/syMGPbyWgGQ9Mhhv9806wdoYE/05e2/spUq6Yf2r6qQqOpE5rDf5pfhAqWBBf3mnv2GAcWnWjb1fGeS+ip8QB3Y3n0wusPJMkzvB0QTFMjWqfmx68CSMK5QrlXLlJP1bwkVh5WnrluJHLcYF+r0o61u3439cOnHsX+y/APXUsovAAAA//8=`
+	str := `H4sIAAAJbogA/1SPO08DMQzHv4vnK/dgQNzMwl4mqE5p4l4DlweJA6pO+e7YEUuVIbL90/+xgw7+YteSFNngYd5hC8rIbzCT9W19VOcN206RykivDAClW3HxupgzdBBT+ER9dzgQCwzj4f/EEIlMQ44uLtMwPg3P07B8lV/lwwS1g4vFzbzgZp0lTAx2/L5LIHaHD+Ah6ys6JVkam2F+38ErJ0DRRlxuUYZMyfoV6ollcyhJ41uygsOa576XlovU6VuOaXx80PkHTrXWPwAAAP//`
 
 	encoded, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
