@@ -5,6 +5,10 @@ import (
 	"reflect"
 )
 
+func main() {
+	sliceSample()
+}
+
 type typeSampler interface {
 	Hoge()
 }
@@ -68,4 +72,33 @@ func SetValuesByReflect(values map[string]interface{}) Fuga {
 		dfv.Set(vVal.Convert(dft.Type))
 	}
 	return *dstFuga
+}
+
+func sliceSample() {
+	var foo []int
+	bar := []int{}
+	hoge := make([]int, 10)
+	sliceSampleTypeSlice(&foo)
+	sliceSampleTypeSlice(&bar)
+	sliceSampleTypeSlice(hoge)
+}
+
+func sliceSampleTypeSlice(v interface{}) {
+	val := reflect.ValueOf(v)
+	fmt.Println(val.CanSet())
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
+	fmt.Println(val.CanSet())
+	fmt.Println(val.Type())
+	fmt.Println(val.Type().Kind() == reflect.Slice)
+	fmt.Println(val.Type().Elem())
+	sType := reflect.SliceOf(val.Type().Elem())
+	sVal := reflect.MakeSlice(sType, 10, 10)
+	fmt.Println(sType, sVal.Index(0).CanSet())
+	sVal.Index(0).Set(reflect.ValueOf(123))
+
+	for i := 0; i < sVal.Len(); i++ {
+		fmt.Println(sVal.Index(i).Interface())
+	}
 }
