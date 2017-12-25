@@ -7,14 +7,28 @@ import (
 )
 
 func queueSample(w io.Writer) {
-	l := list.New()
+	queue := list.New()
 	// Push to queue
-	l.PushBack(1)
-	l.PushBack(2)
+	queue.PushBack(1)
+	queue.PushBack(2)
 
-	// Dequeue from queue
-	e := l.Remove(l.Front())
+	// pop from queue
+	e := queue.Remove(queue.Front())
 	fmt.Fprintln(w, e)
-	e = l.Remove(l.Front())
+	e = queue.Remove(queue.Front())
+	fmt.Fprintln(w, e)
+}
+
+func stackSample(w io.Writer) {
+	stack := list.New()
+
+	// Push to stack
+	stack.PushBack(1)
+	stack.PushBack(2)
+
+	// pop from stack
+	e := stack.Remove(stack.Back())
+	fmt.Fprintln(w, e)
+	e = stack.Remove(stack.Back())
 	fmt.Fprintln(w, e)
 }
