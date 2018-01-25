@@ -42,6 +42,16 @@ func createNgramByLib(s string, n int) []string {
 	return ret
 }
 
+func createNgramByRune(s string, n int) []string {
+	runes := []rune(s)
+	grams := make([]string, 0, len(runes))
+	for left, right := 0, n; right <= len(runes); right++ {
+		grams = append(grams, string(runes[left:right]))
+		left++
+	}
+	return grams
+}
+
 func BenchmarkCreateNgram(b *testing.B) {
 	str := strings.Repeat("あ", 1000)
 	b.Run("Myself", func(b *testing.B) {
@@ -52,6 +62,11 @@ func BenchmarkCreateNgram(b *testing.B) {
 	b.Run("Lib", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			createNgramByLib(str, 2)
+		}
+	})
+	b.Run("Rune", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			createNgramByRune(str, 2)
 		}
 	})
 }
@@ -171,6 +186,126 @@ func TestCreateNgram_LessGrams(t *testing.T) {
 	str := "H"
 	want := []string{}
 	got := createNgram(str, 3)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_Bigram_Multibyte(t *testing.T) {
+	str := "ハローワールド"
+	want := []string{
+		"ハロ",
+		"ロー",
+		"ーワ",
+		"ワー",
+		"ール",
+		"ルド",
+	}
+	got := createNgramByRune(str, 2)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_Bigram(t *testing.T) {
+	str := "Hello, World"
+	want := []string{
+		"He",
+		"el",
+		"ll",
+		"lo",
+		"o,",
+		", ",
+		" W",
+		"Wo",
+		"or",
+		"rl",
+		"ld",
+	}
+	got := createNgramByRune(str, 2)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_Unigram_Multibyte(t *testing.T) {
+	str := "ハローワールド"
+	want := []string{
+		"ハ",
+		"ロ",
+		"ー",
+		"ワ",
+		"ー",
+		"ル",
+		"ド",
+	}
+	got := createNgramByRune(str, 1)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_Unigram(t *testing.T) {
+	str := "Hello, World"
+	want := []string{
+		"H",
+		"e",
+		"l",
+		"l",
+		"o",
+		",",
+		" ",
+		"W",
+		"o",
+		"r",
+		"l",
+		"d",
+	}
+	got := createNgramByRune(str, 1)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_Trigram_Multibyte(t *testing.T) {
+	str := "ハローワールド"
+	want := []string{
+		"ハロー",
+		"ローワ",
+		"ーワー",
+		"ワール",
+		"ールド",
+	}
+	got := createNgramByRune(str, 3)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_Trigram(t *testing.T) {
+	str := "Hello, World"
+	want := []string{
+		"Hel",
+		"ell",
+		"llo",
+		"lo,",
+		"o, ",
+		", W",
+		" Wo",
+		"Wor",
+		"orl",
+		"rld",
+	}
+	got := createNgramByRune(str, 3)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("\nwant : %v\n got : %v", want, got)
+	}
+}
+
+func TestCreateNgramByRune_LessGrams(t *testing.T) {
+	str := "H"
+	want := []string{}
+	got := createNgramByRune(str, 3)
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("\nwant : %v\n got : %v", want, got)
 	}
