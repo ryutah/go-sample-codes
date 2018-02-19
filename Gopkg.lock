@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/deckarep/golang-set"
+  packages = ["."]
+  revision = "1d4478f51bed434f1dadf96dcd9b43aabac66795"
+  version = "v1.7"
+
+[[projects]]
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
   revision = "a0583e0143b1624142adab07e0e97fe106d99561"
@@ -26,6 +32,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/lestrrat/go-ngram"
+  packages = ["."]
+  revision = "4489dcc2a454dc1ab07f5951132b75a1fb6d5126"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -40,6 +52,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "153f19af98a841cbdfc8942346f0d5c616ed1774b448465a0f6c3cbeb73fb814"
+  inputs-digest = "2dd349018c32b2905b3a8a852aef0ad272fff624f1095161a7827133a707ab49"
   solver-name = "gps-cdcl"
   solver-version = 1
