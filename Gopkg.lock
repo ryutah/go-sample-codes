@@ -17,7 +17,7 @@
   branch = "master"
   name = "github.com/gocarina/gocsv"
   packages = ["."]
-  revision = "7099e67763c29f812fa2ed7083f32e38be60125a"
+  revision = "45cbb9cde54ea46d800c4fcd1a686949ac6d87a3"
 
 [[projects]]
   branch = "master"
@@ -47,11 +47,11 @@
   branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
+  revision = "d670f9405373e636a5a2765eea47fac0c9bc91a4"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2dd349018c32b2905b3a8a852aef0ad272fff624f1095161a7827133a707ab49"
+  inputs-digest = "40d59d8baebc85c2e0a8f26ed5acf87a24fd6cb0f61f1d66ea33a0186a890256"
   solver-name = "gps-cdcl"
   solver-version = 1
