@@ -39,6 +39,10 @@
 
 [[constraint]]
   branch = "master"
+  name = "github.com/ikawaha/kagome.ipadic"
+
+[[constraint]]
+  branch = "master"
   name = "github.com/lestrrat/go-ngram"
 
 [[constraint]]
@@ -46,5 +50,9 @@
   version = "0.8.0"
 
 [[constraint]]
-  branch = "v2"
+  branch = "master"
+  name = "golang.org/x/crypto"
+
+[[constraint]]
   name = "gopkg.in/yaml.v2"
+  version = "2.1.1"

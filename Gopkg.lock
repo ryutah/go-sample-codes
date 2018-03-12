@@ -17,7 +17,7 @@
   branch = "master"
   name = "github.com/gocarina/gocsv"
   packages = ["."]
-  revision = "45cbb9cde54ea46d800c4fcd1a686949ac6d87a3"
+  revision = "133f96a03fdec5dbf18306e073d10ef649df59e5"
 
 [[projects]]
   branch = "master"
@@ -33,6 +33,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/ikawaha/kagome.ipadic"
+  packages = ["internal/da","internal/dic","internal/dic/data","internal/lattice","tokenizer"]
+  revision = "dd3ae0544a806f4d39df5a70f46494adb3fbbfa2"
+
+[[projects]]
+  branch = "master"
   name = "github.com/lestrrat/go-ngram"
   packages = ["."]
   revision = "4489dcc2a454dc1ab07f5951132b75a1fb6d5126"
@@ -44,14 +50,26 @@
   version = "v0.8.0"
 
 [[projects]]
-  branch = "v2"
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "c7dcf104e3a7a1417abc0230cb0d5240d764159d"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix","windows"]
+  revision = "7dca6fe1f43775aa6d1334576870ff63f978f539"
+
+[[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "d670f9405373e636a5a2765eea47fac0c9bc91a4"
+  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
+  version = "v2.1.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "40d59d8baebc85c2e0a8f26ed5acf87a24fd6cb0f61f1d66ea33a0186a890256"
+  inputs-digest = "53f6e8da980ec17f10f72cabda4ab254ba5ae26246063812df3e7b07f9df7f22"
   solver-name = "gps-cdcl"
   solver-version = 1
