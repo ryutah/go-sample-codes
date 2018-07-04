@@ -8,6 +8,12 @@
   version = "v1.7"
 
 [[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   name = "github.com/go-redis/redis"
   packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto","internal/singleflight","internal/util"]
   revision = "877867d2845fbaf86798befe410b6ceb6f5c29a3"
@@ -76,6 +82,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "99122d0353c630dec53035784178403a4d6bab2903a29ed3e9a8a196447e3b8d"
+  inputs-digest = "b53a30601839e803ff9dde808737938babd45d3c0bc11afe48cd86b17568c169"
   solver-name = "gps-cdcl"
   solver-version = 1
