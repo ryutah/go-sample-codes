@@ -15,21 +15,30 @@
 
 [[projects]]
   name = "github.com/go-redis/redis"
-  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto","internal/singleflight","internal/util"]
-  revision = "877867d2845fbaf86798befe410b6ceb6f5c29a3"
-  version = "v6.10.2"
+  packages = [
+    ".",
+    "internal",
+    "internal/consistenthash",
+    "internal/hashtag",
+    "internal/pool",
+    "internal/proto",
+    "internal/singleflight",
+    "internal/util"
+  ]
+  revision = "83fb42932f6145ce52df09860384a4653d2d332a"
+  version = "v6.12.0"
 
 [[projects]]
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
-  revision = "a0583e0143b1624142adab07e0e97fe106d99561"
-  version = "v1.3"
+  revision = "d523deb1b23d913de5bdada721a6071e71283618"
+  version = "v1.4.0"
 
 [[projects]]
   branch = "master"
   name = "github.com/gocarina/gocsv"
   packages = ["."]
-  revision = "133f96a03fdec5dbf18306e073d10ef649df59e5"
+  revision = "a5c9099e2484f1551abb9433885e158610a25f4b"
 
 [[projects]]
   branch = "master"
@@ -40,13 +49,19 @@
 [[projects]]
   name = "github.com/golang/mock"
   packages = ["gomock"]
-  revision = "13f360950a79f5864a972c786a10a50e44b69541"
-  version = "v1.0.0"
+  revision = "c34cdb4725f4c3844d095133c6e40e448b86589b"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
   name = "github.com/ikawaha/kagome.ipadic"
-  packages = ["internal/da","internal/dic","internal/dic/data","internal/lattice","tokenizer"]
+  packages = [
+    "internal/da",
+    "internal/dic",
+    "internal/dic/data",
+    "internal/lattice",
+    "tokenizer"
+  ]
   revision = "dd3ae0544a806f4d39df5a70f46494adb3fbbfa2"
 
 [[projects]]
@@ -65,23 +80,38 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "c7dcf104e3a7a1417abc0230cb0d5240d764159d"
+  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "afe8f62b1d6bbd81f31868121a50b06d8188e1f9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix","windows"]
-  revision = "7dca6fe1f43775aa6d1334576870ff63f978f539"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "63fc586f45fe72d95d5240a5d5eb95e6503907d3"
+
+[[projects]]
+  name = "google.golang.org/appengine"
+  packages = ["cloudsql"]
+  revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
+  version = "v1.1.0"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
-  version = "v2.1.1"
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b53a30601839e803ff9dde808737938babd45d3c0bc11afe48cd86b17568c169"
+  inputs-digest = "e15ea450e01ace6743043cd89189a69f4167949609a10c979a1030fcc6202b7e"
   solver-name = "gps-cdcl"
   solver-version = 1
