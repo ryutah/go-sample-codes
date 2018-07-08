@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/boombuler/barcode"
+  packages = [".","qr","utils"]
+  revision = "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/deckarep/golang-set"
   packages = ["."]
   revision = "1d4478f51bed434f1dadf96dcd9b43aabac66795"
@@ -15,16 +21,7 @@
 
 [[projects]]
   name = "github.com/go-redis/redis"
-  packages = [
-    ".",
-    "internal",
-    "internal/consistenthash",
-    "internal/hashtag",
-    "internal/pool",
-    "internal/proto",
-    "internal/singleflight",
-    "internal/util"
-  ]
+  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto","internal/singleflight","internal/util"]
   revision = "83fb42932f6145ce52df09860384a4653d2d332a"
   version = "v6.12.0"
 
@@ -55,13 +52,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/ikawaha/kagome.ipadic"
-  packages = [
-    "internal/da",
-    "internal/dic",
-    "internal/dic/data",
-    "internal/lattice",
-    "tokenizer"
-  ]
+  packages = ["internal/da","internal/dic","internal/dic/data","internal/lattice","tokenizer"]
   revision = "dd3ae0544a806f4d39df5a70f46494adb3fbbfa2"
 
 [[projects]]
@@ -75,6 +66,12 @@
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
+
+[[projects]]
+  name = "github.com/pquerna/otp"
+  packages = ["."]
+  revision = "b7b89250c468c06871d3837bee02e2d5c155ae19"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -91,10 +88,7 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
+  packages = ["unix","windows"]
   revision = "63fc586f45fe72d95d5240a5d5eb95e6503907d3"
 
 [[projects]]
@@ -112,6 +106,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e15ea450e01ace6743043cd89189a69f4167949609a10c979a1030fcc6202b7e"
+  inputs-digest = "f5364f60c8cc31827d227573506df7d64730ba01ffc397fef5f0a29ad3fcfd5c"
   solver-name = "gps-cdcl"
   solver-version = 1
