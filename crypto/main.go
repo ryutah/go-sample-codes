@@ -5,6 +5,7 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"fmt"
 )
 
 type keyPair struct {
@@ -28,4 +29,15 @@ func createKeyPairs(bits int) (*keyPair, error) {
 			Bytes: x509.MarshalPKCS1PublicKey(&privateKey.PublicKey),
 		}),
 	}, nil
+}
+
+func main() {
+	pair, err := createKeyPairs(2048)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Private Key")
+	fmt.Printf("%s\n", pair.privatekey)
+	fmt.Println("Public Key")
+	fmt.Printf("%s\n", pair.publicKey)
 }
