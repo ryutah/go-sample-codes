@@ -62,3 +62,7 @@ func errorCompareSample() {
 func errCompareSampleInline() error {
 	return Err2_1
 }
+
+func createNreError() error {
+	return errors.New("sample error")
+}
