@@ -2,110 +2,219 @@
 
 
 [[projects]]
+  digest = "1:b529f4bf748979caa18b599d40d13e8b6e591a74b340f315ce4f95e119c288c2"
   name = "github.com/boombuler/barcode"
-  packages = [".","qr","utils"]
+  packages = [
+    ".",
+    "qr",
+    "utils",
+  ]
+  pruneopts = ""
   revision = "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:c0243ca6ea596b1c547ae44d824fa42f9127af26788efaeb930898586d186c4d"
   name = "github.com/deckarep/golang-set"
   packages = ["."]
+  pruneopts = ""
   revision = "1d4478f51bed434f1dadf96dcd9b43aabac66795"
   version = "v1.7"
 
 [[projects]]
+  digest = "1:6098222470fe0172157ce9bbef5d2200df4edde17ee649c5d6e48330e4afa4c6"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
+  pruneopts = ""
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:3dfd659219b6f63dc0677a62b8d4e8f10b5cf53900aef40858db10a19407e41d"
   name = "github.com/go-redis/redis"
-  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto","internal/singleflight","internal/util"]
+  packages = [
+    ".",
+    "internal",
+    "internal/consistenthash",
+    "internal/hashtag",
+    "internal/pool",
+    "internal/proto",
+    "internal/singleflight",
+    "internal/util",
+  ]
+  pruneopts = ""
   revision = "83fb42932f6145ce52df09860384a4653d2d332a"
   version = "v6.12.0"
 
 [[projects]]
+  digest = "1:c07de423ca37dc2765396d6971599ab652a339538084b9b58c9f7fc533b28525"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
+  pruneopts = ""
   revision = "d523deb1b23d913de5bdada721a6071e71283618"
   version = "v1.4.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:e17f8561ebfcb22ab12939d5f265d4d1853c44b9f20b7b19a4fde4a84baafa82"
   name = "github.com/gocarina/gocsv"
   packages = ["."]
+  pruneopts = ""
   revision = "a5c9099e2484f1551abb9433885e158610a25f4b"
 
 [[projects]]
   branch = "master"
+  digest = "1:107b233e45174dbab5b1324201d092ea9448e58243ab9f039e4c0f332e121e3a"
   name = "github.com/golang/glog"
   packages = ["."]
+  pruneopts = ""
   revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
 
 [[projects]]
+  digest = "1:73a7106c799f98af4f3da7552906efc6a2570329f4cd2d2f5fb8f9d6c053ff2f"
   name = "github.com/golang/mock"
   packages = ["gomock"]
+  pruneopts = ""
   revision = "c34cdb4725f4c3844d095133c6e40e448b86589b"
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:871a18c39bf1c4c18a2073663431e5c67dbfbc461b9c969e30dbe717871f6189"
+  name = "github.com/google/go-cloud"
+  packages = [
+    "wire/cmd/wire",
+    "wire/internal/wire",
+  ]
+  pruneopts = ""
+  revision = "2152f209f3c907645f7ebdcacdb2c18cd89e6fa8"
+  version = "0.5.0"
+
+[[projects]]
   branch = "master"
+  digest = "1:49bd6b1adcc9d87ea81b38cbb0bb2ec4c6f919b8fc0d1cc93a09e6e40fdeb2a4"
   name = "github.com/ikawaha/kagome.ipadic"
-  packages = ["internal/da","internal/dic","internal/dic/data","internal/lattice","tokenizer"]
+  packages = [
+    "internal/da",
+    "internal/dic",
+    "internal/dic/data",
+    "internal/lattice",
+    "tokenizer",
+  ]
+  pruneopts = ""
   revision = "dd3ae0544a806f4d39df5a70f46494adb3fbbfa2"
 
 [[projects]]
   branch = "master"
+  digest = "1:71784e494b578019620ededb66b837506418df521985b19a6be021b7389312f9"
   name = "github.com/lestrrat/go-ngram"
   packages = ["."]
+  pruneopts = ""
   revision = "4489dcc2a454dc1ab07f5951132b75a1fb6d5126"
 
 [[projects]]
+  digest = "1:7365acd48986e205ccb8652cc746f09c8b7876030d53710ea6ef7d0bd0dcd7ca"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = ""
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:4aea8409c0c3472587636033ab1fa10a2cec1d716449c55d06de4ad96dec0ec1"
   name = "github.com/pquerna/otp"
-  packages = ["."]
+  packages = [
+    ".",
+    "hotp",
+    "totp",
+  ]
+  pruneopts = ""
   revision = "b7b89250c468c06871d3837bee02e2d5c155ae19"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:e85837cb04b78f61688c6eba93ea9d14f60d611e2aaf8319999b1a60d2dafbfa"
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  pruneopts = ""
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
+
+[[projects]]
   branch = "master"
+  digest = "1:6ef14be530be39b6b9d75d54ce1d546ae9231e652d9e3eef198cbb19ce8ed3e7"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
+  pruneopts = ""
   revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   branch = "master"
+  digest = "1:4656104e65eed39be4ad82d1c2d31ccb391ba51817ccfbb6140562b141392b71"
   name = "golang.org/x/net"
   packages = ["context"]
+  pruneopts = ""
   revision = "afe8f62b1d6bbd81f31868121a50b06d8188e1f9"
 
 [[projects]]
   branch = "master"
+  digest = "1:60c3915cfa691dc713534798a10a8893a425c4ab8c569aeca2bd4a51ae81638c"
   name = "golang.org/x/sys"
-  packages = ["unix","windows"]
+  packages = [
+    "unix",
+    "windows",
+  ]
+  pruneopts = ""
   revision = "63fc586f45fe72d95d5240a5d5eb95e6503907d3"
 
 [[projects]]
+  branch = "master"
+  digest = "1:bb222e4b4685651138c43b7945f5cfbdb819ba021a64a87a3a92a662e298c444"
+  name = "golang.org/x/tools"
+  packages = [
+    "go/ast/astutil",
+    "go/buildutil",
+    "go/internal/cgo",
+    "go/loader",
+    "go/types/typeutil",
+  ]
+  pruneopts = ""
+  revision = "a28dfb48e06b2296b66678872c2cb638f0304f20"
+
+[[projects]]
+  digest = "1:c1771ca6060335f9768dff6558108bc5ef6c58506821ad43377ee23ff059e472"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
+  pruneopts = ""
   revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:f0620375dd1f6251d9973b5f2596228cc8042e887cd7f827e4220bc1ce8c30e2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
+  pruneopts = ""
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f5364f60c8cc31827d227573506df7d64730ba01ffc397fef5f0a29ad3fcfd5c"
+  input-imports = [
+    "github.com/dgrijalva/jwt-go",
+    "github.com/go-redis/redis",
+    "github.com/go-sql-driver/mysql",
+    "github.com/gocarina/gocsv",
+    "github.com/golang/glog",
+    "github.com/golang/mock/gomock",
+    "github.com/google/go-cloud/wire/cmd/wire",
+    "github.com/ikawaha/kagome.ipadic/tokenizer",
+    "github.com/lestrrat/go-ngram",
+    "github.com/pkg/errors",
+    "github.com/pquerna/otp",
+    "github.com/pquerna/otp/totp",
+    "github.com/urfave/cli",
+    "golang.org/x/crypto/ssh/terminal",
+    "gopkg.in/yaml.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
