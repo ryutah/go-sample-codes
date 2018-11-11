@@ -1,0 +1,14 @@
+version: "3"
+services:
+  db:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: foo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - ./db-data:/var/lib/mysql
+    ports:
+      - 3306:3306

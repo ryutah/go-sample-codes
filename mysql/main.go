@@ -2,51 +2,32 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/tryumph")
+	db, err := sql.Open("mysql", "user:pass@tcp(127.0.0.1:3306)/foo")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
+	if err := db.Ping(); err != nil {
+		log.Fatal(err)
+	}
 
-	rows, err := db.Query("select * from Tbl_nouki_check_mst")
+	rows, err := db.Query("SELECT * FROM foo")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-	columns, err := rows.Columns()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	values := make([]sql.RawBytes, len(columns))
-
-	scanArgs := make([]interface{}, len(values))
-	for i := range values {
-		scanArgs[i] = &values[i]
-	}
-
 	for rows.Next() {
-		if err := rows.Scan(scanArgs...); err != nil {
+		var id, name string
+		if err := rows.Scan(&id, &name); err != nil {
 			log.Fatal(err)
 		}
-
-		var val string
-		for i, col := range values {
-			if col == nil {
-				val = "NULL"
-			} else {
-				val = string(col)
-			}
-			fmt.Println(columns[i], ": ", val)
-			fmt.Println("-------------------------------------")
-		}
+		log.Printf("%s: %s", id, name)
 	}
 }
