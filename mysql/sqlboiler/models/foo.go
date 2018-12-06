@@ -23,7 +23,7 @@ import (
 
 // Foo is an object representing the database table.
 type Foo struct {
-	ID   string      `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID   int         `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name null.String `boil:"name" json:"name,omitempty" toml:"name" yaml:"name,omitempty"`
 
 	R *fooR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -40,10 +40,17 @@ var FooColumns = struct {
 
 // FooRels is where relationship names are stored.
 var FooRels = struct {
-}{}
+	Bars        string
+	FooChildren string
+}{
+	Bars:        "Bars",
+	FooChildren: "FooChildren",
+}
 
 // fooR is where relationships are stored.
 type fooR struct {
+	Bars        BarSlice
+	FooChildren FooChildSlice
 }
 
 // NewStruct creates a new relationship struct
@@ -56,8 +63,8 @@ type fooL struct{}
 
 var (
 	fooColumns               = []string{"id", "name"}
-	fooColumnsWithoutDefault = []string{"id", "name"}
-	fooColumnsWithDefault    = []string{}
+	fooColumnsWithoutDefault = []string{"name"}
+	fooColumnsWithDefault    = []string{"id"}
 	fooPrimaryKeyColumns     = []string{"id"}
 )
 
@@ -297,6 +304,336 @@ func (q fooQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, 
 	return count > 0, nil
 }
 
+// Bars retrieves all the bar's Bars with an executor.
+func (o *Foo) Bars(mods ...qm.QueryMod) barQuery {
+	var queryMods []qm.QueryMod
+	if len(mods) != 0 {
+		queryMods = append(queryMods, mods...)
+	}
+
+	queryMods = append(queryMods,
+		qm.Where("`bar`.`foo_id`=?", o.ID),
+	)
+
+	query := Bars(queryMods...)
+	queries.SetFrom(query.Query, "`bar`")
+
+	if len(queries.GetSelect(query.Query)) == 0 {
+		queries.SetSelect(query.Query, []string{"`bar`.*"})
+	}
+
+	return query
+}
+
+// FooChildren retrieves all the foo_child's FooChildren with an executor.
+func (o *Foo) FooChildren(mods ...qm.QueryMod) fooChildQuery {
+	var queryMods []qm.QueryMod
+	if len(mods) != 0 {
+		queryMods = append(queryMods, mods...)
+	}
+
+	queryMods = append(queryMods,
+		qm.Where("`foo_child`.`foo_id`=?", o.ID),
+	)
+
+	query := FooChildren(queryMods...)
+	queries.SetFrom(query.Query, "`foo_child`")
+
+	if len(queries.GetSelect(query.Query)) == 0 {
+		queries.SetSelect(query.Query, []string{"`foo_child`.*"})
+	}
+
+	return query
+}
+
+// LoadBars allows an eager lookup of values, cached into the
+// loaded structs of the objects. This is for a 1-M or N-M relationship.
+func (fooL) LoadBars(ctx context.Context, e boil.ContextExecutor, singular bool, maybeFoo interface{}, mods queries.Applicator) error {
+	var slice []*Foo
+	var object *Foo
+
+	if singular {
+		object = maybeFoo.(*Foo)
+	} else {
+		slice = *maybeFoo.(*[]*Foo)
+	}
+
+	args := make([]interface{}, 0, 1)
+	if singular {
+		if object.R == nil {
+			object.R = &fooR{}
+		}
+		args = append(args, object.ID)
+	} else {
+	Outer:
+		for _, obj := range slice {
+			if obj.R == nil {
+				obj.R = &fooR{}
+			}
+
+			for _, a := range args {
+				if a == obj.ID {
+					continue Outer
+				}
+			}
+
+			args = append(args, obj.ID)
+		}
+	}
+
+	query := NewQuery(qm.From(`bar`), qm.WhereIn(`foo_id in ?`, args...))
+	if mods != nil {
+		mods.Apply(query)
+	}
+
+	results, err := query.QueryContext(ctx, e)
+	if err != nil {
+		return errors.Wrap(err, "failed to eager load bar")
+	}
+
+	var resultSlice []*Bar
+	if err = queries.Bind(results, &resultSlice); err != nil {
+		return errors.Wrap(err, "failed to bind eager loaded slice bar")
+	}
+
+	if err = results.Close(); err != nil {
+		return errors.Wrap(err, "failed to close results in eager load on bar")
+	}
+	if err = results.Err(); err != nil {
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for bar")
+	}
+
+	if len(barAfterSelectHooks) != 0 {
+		for _, obj := range resultSlice {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
+				return err
+			}
+		}
+	}
+	if singular {
+		object.R.Bars = resultSlice
+		for _, foreign := range resultSlice {
+			if foreign.R == nil {
+				foreign.R = &barR{}
+			}
+			foreign.R.Foo = object
+		}
+		return nil
+	}
+
+	for _, foreign := range resultSlice {
+		for _, local := range slice {
+			if local.ID == foreign.FooID {
+				local.R.Bars = append(local.R.Bars, foreign)
+				if foreign.R == nil {
+					foreign.R = &barR{}
+				}
+				foreign.R.Foo = local
+				break
+			}
+		}
+	}
+
+	return nil
+}
+
+// LoadFooChildren allows an eager lookup of values, cached into the
+// loaded structs of the objects. This is for a 1-M or N-M relationship.
+func (fooL) LoadFooChildren(ctx context.Context, e boil.ContextExecutor, singular bool, maybeFoo interface{}, mods queries.Applicator) error {
+	var slice []*Foo
+	var object *Foo
+
+	if singular {
+		object = maybeFoo.(*Foo)
+	} else {
+		slice = *maybeFoo.(*[]*Foo)
+	}
+
+	args := make([]interface{}, 0, 1)
+	if singular {
+		if object.R == nil {
+			object.R = &fooR{}
+		}
+		args = append(args, object.ID)
+	} else {
+	Outer:
+		for _, obj := range slice {
+			if obj.R == nil {
+				obj.R = &fooR{}
+			}
+
+			for _, a := range args {
+				if a == obj.ID {
+					continue Outer
+				}
+			}
+
+			args = append(args, obj.ID)
+		}
+	}
+
+	query := NewQuery(qm.From(`foo_child`), qm.WhereIn(`foo_id in ?`, args...))
+	if mods != nil {
+		mods.Apply(query)
+	}
+
+	results, err := query.QueryContext(ctx, e)
+	if err != nil {
+		return errors.Wrap(err, "failed to eager load foo_child")
+	}
+
+	var resultSlice []*FooChild
+	if err = queries.Bind(results, &resultSlice); err != nil {
+		return errors.Wrap(err, "failed to bind eager loaded slice foo_child")
+	}
+
+	if err = results.Close(); err != nil {
+		return errors.Wrap(err, "failed to close results in eager load on foo_child")
+	}
+	if err = results.Err(); err != nil {
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for foo_child")
+	}
+
+	if len(fooChildAfterSelectHooks) != 0 {
+		for _, obj := range resultSlice {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
+				return err
+			}
+		}
+	}
+	if singular {
+		object.R.FooChildren = resultSlice
+		for _, foreign := range resultSlice {
+			if foreign.R == nil {
+				foreign.R = &fooChildR{}
+			}
+			foreign.R.Foo = object
+		}
+		return nil
+	}
+
+	for _, foreign := range resultSlice {
+		for _, local := range slice {
+			if local.ID == foreign.FooID {
+				local.R.FooChildren = append(local.R.FooChildren, foreign)
+				if foreign.R == nil {
+					foreign.R = &fooChildR{}
+				}
+				foreign.R.Foo = local
+				break
+			}
+		}
+	}
+
+	return nil
+}
+
+// AddBars adds the given related objects to the existing relationships
+// of the foo, optionally inserting them as new records.
+// Appends related to o.R.Bars.
+// Sets related.R.Foo appropriately.
+func (o *Foo) AddBars(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Bar) error {
+	var err error
+	for _, rel := range related {
+		if insert {
+			rel.FooID = o.ID
+			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
+				return errors.Wrap(err, "failed to insert into foreign table")
+			}
+		} else {
+			updateQuery := fmt.Sprintf(
+				"UPDATE `bar` SET %s WHERE %s",
+				strmangle.SetParamNames("`", "`", 0, []string{"foo_id"}),
+				strmangle.WhereClause("`", "`", 0, barPrimaryKeyColumns),
+			)
+			values := []interface{}{o.ID, rel.ID}
+
+			if boil.DebugMode {
+				fmt.Fprintln(boil.DebugWriter, updateQuery)
+				fmt.Fprintln(boil.DebugWriter, values)
+			}
+
+			if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
+				return errors.Wrap(err, "failed to update foreign table")
+			}
+
+			rel.FooID = o.ID
+		}
+	}
+
+	if o.R == nil {
+		o.R = &fooR{
+			Bars: related,
+		}
+	} else {
+		o.R.Bars = append(o.R.Bars, related...)
+	}
+
+	for _, rel := range related {
+		if rel.R == nil {
+			rel.R = &barR{
+				Foo: o,
+			}
+		} else {
+			rel.R.Foo = o
+		}
+	}
+	return nil
+}
+
+// AddFooChildren adds the given related objects to the existing relationships
+// of the foo, optionally inserting them as new records.
+// Appends related to o.R.FooChildren.
+// Sets related.R.Foo appropriately.
+func (o *Foo) AddFooChildren(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*FooChild) error {
+	var err error
+	for _, rel := range related {
+		if insert {
+			rel.FooID = o.ID
+			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
+				return errors.Wrap(err, "failed to insert into foreign table")
+			}
+		} else {
+			updateQuery := fmt.Sprintf(
+				"UPDATE `foo_child` SET %s WHERE %s",
+				strmangle.SetParamNames("`", "`", 0, []string{"foo_id"}),
+				strmangle.WhereClause("`", "`", 0, fooChildPrimaryKeyColumns),
+			)
+			values := []interface{}{o.ID, rel.ID}
+
+			if boil.DebugMode {
+				fmt.Fprintln(boil.DebugWriter, updateQuery)
+				fmt.Fprintln(boil.DebugWriter, values)
+			}
+
+			if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
+				return errors.Wrap(err, "failed to update foreign table")
+			}
+
+			rel.FooID = o.ID
+		}
+	}
+
+	if o.R == nil {
+		o.R = &fooR{
+			FooChildren: related,
+		}
+	} else {
+		o.R.FooChildren = append(o.R.FooChildren, related...)
+	}
+
+	for _, rel := range related {
+		if rel.R == nil {
+			rel.R = &fooChildR{
+				Foo: o,
+			}
+		} else {
+			rel.R.Foo = o
+		}
+	}
+	return nil
+}
+
 // Foos retrieves all the records using an executor.
 func Foos(mods ...qm.QueryMod) fooQuery {
 	mods = append(mods, qm.From("`foo`"))
@@ -305,7 +642,7 @@ func Foos(mods ...qm.QueryMod) fooQuery {
 
 // FindFoo retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindFoo(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Foo, error) {
+func FindFoo(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Foo, error) {
 	fooObj := &Foo{}
 
 	sel := "*"
@@ -388,15 +725,26 @@ func (o *Foo) Insert(ctx context.Context, exec boil.ContextExecutor, columns boi
 		fmt.Fprintln(boil.DebugWriter, vals)
 	}
 
-	_, err = exec.ExecContext(ctx, cache.query, vals...)
+	result, err := exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
 		return errors.Wrap(err, "models: unable to insert into foo")
 	}
 
+	var lastID int64
 	var identifierCols []interface{}
 
 	if len(cache.retMapping) == 0 {
+		goto CacheNoHooks
+	}
+
+	lastID, err = result.LastInsertId()
+	if err != nil {
+		return ErrSyncFail
+	}
+
+	o.ID = int(lastID)
+	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == fooMapping["ID"] {
 		goto CacheNoHooks
 	}
 
@@ -650,16 +998,27 @@ func (o *Foo) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColum
 		fmt.Fprintln(boil.DebugWriter, vals)
 	}
 
-	_, err = exec.ExecContext(ctx, cache.query, vals...)
+	result, err := exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
 		return errors.Wrap(err, "models: unable to upsert for foo")
 	}
 
+	var lastID int64
 	var uniqueMap []uint64
 	var nzUniqueCols []interface{}
 
 	if len(cache.retMapping) == 0 {
+		goto CacheNoHooks
+	}
+
+	lastID, err = result.LastInsertId()
+	if err != nil {
+		return ErrSyncFail
+	}
+
+	o.ID = int(lastID)
+	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == fooMapping["id"] {
 		goto CacheNoHooks
 	}
 
@@ -841,7 +1200,7 @@ func (o *FooSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) err
 }
 
 // FooExists checks if the Foo row exists.
-func FooExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func FooExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `foo` where `id`=? limit 1)"
 

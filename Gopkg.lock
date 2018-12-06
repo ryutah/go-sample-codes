@@ -257,14 +257,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:56673e1639c46f186c863c6a27b6e8ca7478c20b9799034495cb9873f2543c5e"
-  name = "github.com/ryutah/go-sample-codes"
-  packages = ["wire/simple/foo"]
-  pruneopts = "UT"
-  revision = "d14b38f7bdf5b2dc2f313cc07157188fe027e7b2"
-
-[[projects]]
   digest = "1:6a4a11ba764a56d2758899ec6f3848d24698d48442ebce85ee7a3f63284526cd"
   name = "github.com/spf13/afero"
   packages = [
@@ -454,7 +446,6 @@
     "github.com/pkg/errors",
     "github.com/pquerna/otp",
     "github.com/pquerna/otp/totp",
-    "github.com/ryutah/go-sample-codes/wire/simple/foo",
     "github.com/spf13/viper",
     "github.com/urfave/cli",
     "github.com/volatiletech/null",

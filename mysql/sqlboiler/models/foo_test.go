@@ -494,6 +494,313 @@ func testFoosInsertWhitelist(t *testing.T) {
 	}
 }
 
+func testFooToManyBars(t *testing.T) {
+	var err error
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Foo
+	var b, c Bar
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, fooDBTypes, true, fooColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Foo struct: %s", err)
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	if err = randomize.Struct(seed, &b, barDBTypes, false, barColumnsWithDefault...); err != nil {
+		t.Fatal(err)
+	}
+	if err = randomize.Struct(seed, &c, barDBTypes, false, barColumnsWithDefault...); err != nil {
+		t.Fatal(err)
+	}
+
+	b.FooID = a.ID
+	c.FooID = a.ID
+
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = c.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	bar, err := a.Bars().All(ctx, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	bFound, cFound := false, false
+	for _, v := range bar {
+		if v.FooID == b.FooID {
+			bFound = true
+		}
+		if v.FooID == c.FooID {
+			cFound = true
+		}
+	}
+
+	if !bFound {
+		t.Error("expected to find b")
+	}
+	if !cFound {
+		t.Error("expected to find c")
+	}
+
+	slice := FooSlice{&a}
+	if err = a.L.LoadBars(ctx, tx, false, (*[]*Foo)(&slice), nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(a.R.Bars); got != 2 {
+		t.Error("number of eager loaded records wrong, got:", got)
+	}
+
+	a.R.Bars = nil
+	if err = a.L.LoadBars(ctx, tx, true, &a, nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(a.R.Bars); got != 2 {
+		t.Error("number of eager loaded records wrong, got:", got)
+	}
+
+	if t.Failed() {
+		t.Logf("%#v", bar)
+	}
+}
+
+func testFooToManyFooChildren(t *testing.T) {
+	var err error
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Foo
+	var b, c FooChild
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, fooDBTypes, true, fooColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Foo struct: %s", err)
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	if err = randomize.Struct(seed, &b, fooChildDBTypes, false, fooChildColumnsWithDefault...); err != nil {
+		t.Fatal(err)
+	}
+	if err = randomize.Struct(seed, &c, fooChildDBTypes, false, fooChildColumnsWithDefault...); err != nil {
+		t.Fatal(err)
+	}
+
+	b.FooID = a.ID
+	c.FooID = a.ID
+
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = c.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	fooChild, err := a.FooChildren().All(ctx, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	bFound, cFound := false, false
+	for _, v := range fooChild {
+		if v.FooID == b.FooID {
+			bFound = true
+		}
+		if v.FooID == c.FooID {
+			cFound = true
+		}
+	}
+
+	if !bFound {
+		t.Error("expected to find b")
+	}
+	if !cFound {
+		t.Error("expected to find c")
+	}
+
+	slice := FooSlice{&a}
+	if err = a.L.LoadFooChildren(ctx, tx, false, (*[]*Foo)(&slice), nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(a.R.FooChildren); got != 2 {
+		t.Error("number of eager loaded records wrong, got:", got)
+	}
+
+	a.R.FooChildren = nil
+	if err = a.L.LoadFooChildren(ctx, tx, true, &a, nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(a.R.FooChildren); got != 2 {
+		t.Error("number of eager loaded records wrong, got:", got)
+	}
+
+	if t.Failed() {
+		t.Logf("%#v", fooChild)
+	}
+}
+
+func testFooToManyAddOpBars(t *testing.T) {
+	var err error
+
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Foo
+	var b, c, d, e Bar
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, fooDBTypes, false, strmangle.SetComplement(fooPrimaryKeyColumns, fooColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+	foreigners := []*Bar{&b, &c, &d, &e}
+	for _, x := range foreigners {
+		if err = randomize.Struct(seed, x, barDBTypes, false, strmangle.SetComplement(barPrimaryKeyColumns, barColumnsWithoutDefault)...); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = c.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	foreignersSplitByInsertion := [][]*Bar{
+		{&b, &c},
+		{&d, &e},
+	}
+
+	for i, x := range foreignersSplitByInsertion {
+		err = a.AddBars(ctx, tx, i != 0, x...)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		first := x[0]
+		second := x[1]
+
+		if a.ID != first.FooID {
+			t.Error("foreign key was wrong value", a.ID, first.FooID)
+		}
+		if a.ID != second.FooID {
+			t.Error("foreign key was wrong value", a.ID, second.FooID)
+		}
+
+		if first.R.Foo != &a {
+			t.Error("relationship was not added properly to the foreign slice")
+		}
+		if second.R.Foo != &a {
+			t.Error("relationship was not added properly to the foreign slice")
+		}
+
+		if a.R.Bars[i*2] != first {
+			t.Error("relationship struct slice not set to correct value")
+		}
+		if a.R.Bars[i*2+1] != second {
+			t.Error("relationship struct slice not set to correct value")
+		}
+
+		count, err := a.Bars().Count(ctx, tx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if want := int64((i + 1) * 2); count != want {
+			t.Error("want", want, "got", count)
+		}
+	}
+}
+func testFooToManyAddOpFooChildren(t *testing.T) {
+	var err error
+
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Foo
+	var b, c, d, e FooChild
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, fooDBTypes, false, strmangle.SetComplement(fooPrimaryKeyColumns, fooColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+	foreigners := []*FooChild{&b, &c, &d, &e}
+	for _, x := range foreigners {
+		if err = randomize.Struct(seed, x, fooChildDBTypes, false, strmangle.SetComplement(fooChildPrimaryKeyColumns, fooChildColumnsWithoutDefault)...); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = c.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	foreignersSplitByInsertion := [][]*FooChild{
+		{&b, &c},
+		{&d, &e},
+	}
+
+	for i, x := range foreignersSplitByInsertion {
+		err = a.AddFooChildren(ctx, tx, i != 0, x...)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		first := x[0]
+		second := x[1]
+
+		if a.ID != first.FooID {
+			t.Error("foreign key was wrong value", a.ID, first.FooID)
+		}
+		if a.ID != second.FooID {
+			t.Error("foreign key was wrong value", a.ID, second.FooID)
+		}
+
+		if first.R.Foo != &a {
+			t.Error("relationship was not added properly to the foreign slice")
+		}
+		if second.R.Foo != &a {
+			t.Error("relationship was not added properly to the foreign slice")
+		}
+
+		if a.R.FooChildren[i*2] != first {
+			t.Error("relationship struct slice not set to correct value")
+		}
+		if a.R.FooChildren[i*2+1] != second {
+			t.Error("relationship struct slice not set to correct value")
+		}
+
+		count, err := a.FooChildren().Count(ctx, tx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if want := int64((i + 1) * 2); count != want {
+			t.Error("want", want, "got", count)
+		}
+	}
+}
+
 func testFoosReload(t *testing.T) {
 	t.Parallel()
 
@@ -568,7 +875,7 @@ func testFoosSelect(t *testing.T) {
 }
 
 var (
-	fooDBTypes = map[string]string{`ID`: `varchar`, `Name`: `varchar`}
+	fooDBTypes = map[string]string{`ID`: `int`, `Name`: `varchar`}
 	_          = bytes.MinRead
 )
 

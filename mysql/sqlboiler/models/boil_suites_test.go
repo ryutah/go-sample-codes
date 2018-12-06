@@ -12,57 +12,114 @@ import "testing"
 // It does NOT run each operation group in parallel.
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
+	t.Run("Bars", testBars)
+	t.Run("BarChildren", testBarChildren)
+	t.Run("BarOneChildren", testBarOneChildren)
 	t.Run("Foos", testFoos)
+	t.Run("FooChildren", testFooChildren)
 }
 
 func TestDelete(t *testing.T) {
+	t.Run("Bars", testBarsDelete)
+	t.Run("BarChildren", testBarChildrenDelete)
+	t.Run("BarOneChildren", testBarOneChildrenDelete)
 	t.Run("Foos", testFoosDelete)
+	t.Run("FooChildren", testFooChildrenDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
+	t.Run("Bars", testBarsQueryDeleteAll)
+	t.Run("BarChildren", testBarChildrenQueryDeleteAll)
+	t.Run("BarOneChildren", testBarOneChildrenQueryDeleteAll)
 	t.Run("Foos", testFoosQueryDeleteAll)
+	t.Run("FooChildren", testFooChildrenQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
+	t.Run("Bars", testBarsSliceDeleteAll)
+	t.Run("BarChildren", testBarChildrenSliceDeleteAll)
+	t.Run("BarOneChildren", testBarOneChildrenSliceDeleteAll)
 	t.Run("Foos", testFoosSliceDeleteAll)
+	t.Run("FooChildren", testFooChildrenSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
+	t.Run("Bars", testBarsExists)
+	t.Run("BarChildren", testBarChildrenExists)
+	t.Run("BarOneChildren", testBarOneChildrenExists)
 	t.Run("Foos", testFoosExists)
+	t.Run("FooChildren", testFooChildrenExists)
 }
 
 func TestFind(t *testing.T) {
+	t.Run("Bars", testBarsFind)
+	t.Run("BarChildren", testBarChildrenFind)
+	t.Run("BarOneChildren", testBarOneChildrenFind)
 	t.Run("Foos", testFoosFind)
+	t.Run("FooChildren", testFooChildrenFind)
 }
 
 func TestBind(t *testing.T) {
+	t.Run("Bars", testBarsBind)
+	t.Run("BarChildren", testBarChildrenBind)
+	t.Run("BarOneChildren", testBarOneChildrenBind)
 	t.Run("Foos", testFoosBind)
+	t.Run("FooChildren", testFooChildrenBind)
 }
 
 func TestOne(t *testing.T) {
+	t.Run("Bars", testBarsOne)
+	t.Run("BarChildren", testBarChildrenOne)
+	t.Run("BarOneChildren", testBarOneChildrenOne)
 	t.Run("Foos", testFoosOne)
+	t.Run("FooChildren", testFooChildrenOne)
 }
 
 func TestAll(t *testing.T) {
+	t.Run("Bars", testBarsAll)
+	t.Run("BarChildren", testBarChildrenAll)
+	t.Run("BarOneChildren", testBarOneChildrenAll)
 	t.Run("Foos", testFoosAll)
+	t.Run("FooChildren", testFooChildrenAll)
 }
 
 func TestCount(t *testing.T) {
+	t.Run("Bars", testBarsCount)
+	t.Run("BarChildren", testBarChildrenCount)
+	t.Run("BarOneChildren", testBarOneChildrenCount)
 	t.Run("Foos", testFoosCount)
+	t.Run("FooChildren", testFooChildrenCount)
 }
 
 func TestHooks(t *testing.T) {
+	t.Run("Bars", testBarsHooks)
+	t.Run("BarChildren", testBarChildrenHooks)
+	t.Run("BarOneChildren", testBarOneChildrenHooks)
 	t.Run("Foos", testFoosHooks)
+	t.Run("FooChildren", testFooChildrenHooks)
 }
 
 func TestInsert(t *testing.T) {
+	t.Run("Bars", testBarsInsert)
+	t.Run("Bars", testBarsInsertWhitelist)
+	t.Run("BarChildren", testBarChildrenInsert)
+	t.Run("BarChildren", testBarChildrenInsertWhitelist)
+	t.Run("BarOneChildren", testBarOneChildrenInsert)
+	t.Run("BarOneChildren", testBarOneChildrenInsertWhitelist)
 	t.Run("Foos", testFoosInsert)
 	t.Run("Foos", testFoosInsertWhitelist)
+	t.Run("FooChildren", testFooChildrenInsert)
+	t.Run("FooChildren", testFooChildrenInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOne(t *testing.T) {}
+func TestToOne(t *testing.T) {
+	t.Run("BarToFooUsingFoo", testBarToOneFooUsingFoo)
+	t.Run("BarChildToBarUsingBar", testBarChildToOneBarUsingBar)
+	t.Run("BarOneChildToBarUsingBar", testBarOneChildToOneBarUsingBar)
+	t.Run("FooChildToFooUsingFoo", testFooChildToOneFooUsingFoo)
+}
 
 // TestOneToOne tests cannot be run in parallel
 // or deadlocks can occur.
@@ -70,11 +127,21 @@ func TestOneToOne(t *testing.T) {}
 
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToMany(t *testing.T) {}
+func TestToMany(t *testing.T) {
+	t.Run("BarToBarChildren", testBarToManyBarChildren)
+	t.Run("BarToBarOneChildren", testBarToManyBarOneChildren)
+	t.Run("FooToBars", testFooToManyBars)
+	t.Run("FooToFooChildren", testFooToManyFooChildren)
+}
 
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOneSet(t *testing.T) {}
+func TestToOneSet(t *testing.T) {
+	t.Run("BarToFooUsingBars", testBarToOneSetOpFooUsingFoo)
+	t.Run("BarChildToBarUsingBarChildren", testBarChildToOneSetOpBarUsingBar)
+	t.Run("BarOneChildToBarUsingBarOneChildren", testBarOneChildToOneSetOpBarUsingBar)
+	t.Run("FooChildToFooUsingFooChildren", testFooChildToOneSetOpFooUsingFoo)
+}
 
 // TestToOneRemove tests cannot be run in parallel
 // or deadlocks can occur.
@@ -90,7 +157,12 @@ func TestOneToOneRemove(t *testing.T) {}
 
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManyAdd(t *testing.T) {}
+func TestToManyAdd(t *testing.T) {
+	t.Run("BarToBarChildren", testBarToManyAddOpBarChildren)
+	t.Run("BarToBarOneChildren", testBarToManyAddOpBarOneChildren)
+	t.Run("FooToBars", testFooToManyAddOpBars)
+	t.Run("FooToFooChildren", testFooToManyAddOpFooChildren)
+}
 
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.
@@ -101,21 +173,41 @@ func TestToManySet(t *testing.T) {}
 func TestToManyRemove(t *testing.T) {}
 
 func TestReload(t *testing.T) {
+	t.Run("Bars", testBarsReload)
+	t.Run("BarChildren", testBarChildrenReload)
+	t.Run("BarOneChildren", testBarOneChildrenReload)
 	t.Run("Foos", testFoosReload)
+	t.Run("FooChildren", testFooChildrenReload)
 }
 
 func TestReloadAll(t *testing.T) {
+	t.Run("Bars", testBarsReloadAll)
+	t.Run("BarChildren", testBarChildrenReloadAll)
+	t.Run("BarOneChildren", testBarOneChildrenReloadAll)
 	t.Run("Foos", testFoosReloadAll)
+	t.Run("FooChildren", testFooChildrenReloadAll)
 }
 
 func TestSelect(t *testing.T) {
+	t.Run("Bars", testBarsSelect)
+	t.Run("BarChildren", testBarChildrenSelect)
+	t.Run("BarOneChildren", testBarOneChildrenSelect)
 	t.Run("Foos", testFoosSelect)
+	t.Run("FooChildren", testFooChildrenSelect)
 }
 
 func TestUpdate(t *testing.T) {
+	t.Run("Bars", testBarsUpdate)
+	t.Run("BarChildren", testBarChildrenUpdate)
+	t.Run("BarOneChildren", testBarOneChildrenUpdate)
 	t.Run("Foos", testFoosUpdate)
+	t.Run("FooChildren", testFooChildrenUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
+	t.Run("Bars", testBarsSliceUpdateAll)
+	t.Run("BarChildren", testBarChildrenSliceUpdateAll)
+	t.Run("BarOneChildren", testBarOneChildrenSliceUpdateAll)
 	t.Run("Foos", testFoosSliceUpdateAll)
+	t.Run("FooChildren", testFooChildrenSliceUpdateAll)
 }

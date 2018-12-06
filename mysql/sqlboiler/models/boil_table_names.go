@@ -4,7 +4,15 @@
 package models
 
 var TableNames = struct {
-	Foo string
+	Bar         string
+	BarChild    string
+	BarOneChild string
+	Foo         string
+	FooChild    string
 }{
-	Foo: "foo",
+	Bar:         "bar",
+	BarChild:    "bar_child",
+	BarOneChild: "bar_one_child",
+	Foo:         "foo",
+	FooChild:    "foo_child",
 }
