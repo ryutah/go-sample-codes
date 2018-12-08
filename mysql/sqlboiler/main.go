@@ -80,4 +80,17 @@ func main() {
 	}
 	b, _ = json.MarshalIndent(barChildren, "", "  ")
 	fmt.Println(string(b))
+
+	type barWrapper struct {
+		models.Bar         `boil:",bind"`
+		models.BarOneChild `boil:"child,bind"`
+	}
+	bars := make([]barWrapper, 0)
+	if err := models.Bars(
+		qm.InnerJoin("bar_one_child as c on c.bar_id = bar.id"),
+	).Bind(ctx, db, &bars); err != nil {
+		log.Fatalf("%#v", err)
+	}
+	b, _ = json.MarshalIndent(barChildren, "", "  ")
+	fmt.Println(string(b))
 }
