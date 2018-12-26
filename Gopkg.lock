@@ -165,6 +165,22 @@
   revision = "dd3ae0544a806f4d39df5a70f46494adb3fbbfa2"
 
 [[projects]]
+  digest = "1:d4e6e8584d0a94ce567d237e19192dae44d57d2767ac7e1d7fbf5626d176381a"
+  name = "github.com/jinzhu/gorm"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "472c70caa40267cb89fd8facb07fe6454b578626"
+  version = "v1.9.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:fd97437fbb6b7dce04132cf06775bd258cce305c44add58eb55ca86c6c325160"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "04140366298a54a039076d798123ffa108fff46c"
+
+[[projects]]
   digest = "1:3e551bbb3a7c0ab2a2bf4660e7fcad16db089fdcfbb44b0199e62838038623ea"
   name = "github.com/json-iterator/go"
   packages = ["."]
@@ -441,6 +457,7 @@
     "github.com/golang/mock/gomock",
     "github.com/google/go-cloud/wire",
     "github.com/ikawaha/kagome.ipadic/tokenizer",
+    "github.com/jinzhu/gorm",
     "github.com/kat-co/vala",
     "github.com/lestrrat/go-ngram",
     "github.com/pkg/errors",
