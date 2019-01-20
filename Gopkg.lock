@@ -245,6 +245,14 @@
   version = "1.0.1"
 
 [[projects]]
+  digest = "1:3465cca9dac8f89b9966d86bf2646cab7703075fe32c185462f8bccc9017e6df"
+  name = "github.com/montanaflynn/stats"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "63fbb2597b7a13043b453a4b819945badb8f8926"
+  version = "v0.5.0"
+
+[[projects]]
   digest = "1:95741de3af260a92cc5c7f3f3061e85273f5a81b5db20d4bd68da74bd521675e"
   name = "github.com/pelletier/go-toml"
   packages = ["."]
@@ -460,6 +468,7 @@
     "github.com/jinzhu/gorm",
     "github.com/kat-co/vala",
     "github.com/lestrrat/go-ngram",
+    "github.com/montanaflynn/stats",
     "github.com/pkg/errors",
     "github.com/pquerna/otp",
     "github.com/pquerna/otp/totp",
